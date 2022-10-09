@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace PlasticalMarkdown;
 public class MarkdownInfo
 {
-     #region Constructors
+    #region Constructors
 
     public MarkdownInfo(string path)
     {
@@ -29,6 +29,21 @@ public class MarkdownInfo
             file = value;
             if (!file.Exists)
                 throw new FileNotFoundException($"File \"{file.FullName}\" doesn't exist.");
+        }
+    }
+
+    public string SourceText
+    {
+        get
+        {
+            try
+            {
+                return System.IO.File.ReadAllText(File.FullName);
+            }
+            catch (Exception)
+            {
+                return "";
+            }
         }
     }
 
