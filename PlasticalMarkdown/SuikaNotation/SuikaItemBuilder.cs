@@ -15,13 +15,15 @@ public class SuikaItemBuilder
             case ItemType.TextOutput:
                 Match match = Regex.Match(value, @"\*[\n]*\*");
                 if (match.Success)
-                    Item = new TextItem(value.Replace(match.Value, ""), match.Value, value, type);
+                    Item = new TextItem(value.Replace(match.Value, ""), match.Value, value);
                 else
-                    Item = new TextItem(value, "", value, type);
+                    Item = new TextItem(value, "", value);
                 break;
             case ItemType.Function:
+                Item = new FunctionItem(value);
                 break;
             case ItemType.Label:
+                Item = new LabelItem(value);
                 break;
             default:
                 break;
@@ -30,6 +32,6 @@ public class SuikaItemBuilder
     SuikaItem Item;
     public SuikaItem ToSuikaItem()
     {
-        return null;
+        return Item;
     }
 }
