@@ -7,22 +7,20 @@ using System.Threading.Tasks;
 namespace PlasticalMarkdown.SuikaNotation;
 public class SuikaItem : MarkdownItem
 {
-    public SuikaItem(string value, ItemType type) : base(value)
+    public SuikaItem(string value) : base(value)
     {
-        Type = type;
     }
-    public ItemType Type { get; set; }
 }
 public class FunctionItem : SuikaItem
 {
-    public FunctionItem(string value, ItemType type) : base(value, type)
+    public FunctionItem(string value) : base(value)
     {
 
     }
 }
 public class TextItem : SuikaItem
 {
-    public TextItem(string speech, string speaker, string value, ItemType type) : base(value, type)
+    public TextItem(string speech, string speaker, string value) : base(value)
     {
         Speech = speech;
         Speaker = speaker;
@@ -37,7 +35,7 @@ public class TextItem : SuikaItem
 }
 public class LabelItem : SuikaItem
 {
-    public LabelItem(string value, ItemType type) : base(value, type)
+    public LabelItem(string value) : base(value)
     {
 
     }
