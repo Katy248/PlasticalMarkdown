@@ -8,25 +8,26 @@ using System.Text.RegularExpressions;
 namespace PlasticalMarkdown.SuikaNotation;
 class Parser : IMarkdownParser
 {
-    public Dictionary<string, ItemType> Items = new();
+    public Parser(Dictionary<string, ItemType> itemTypes)
+    {
+        ItemTypes = itemTypes;
+    }
+
+    public readonly Dictionary<string, ItemType> ItemTypes = new();
+    
     public IEnumerable<MarkdownItem> Parse(MarkdownInfo markdown)
     {
-        StringBuilder source = new StringBuilder(markdown.SourceText);
-        while (source.Length > 0)
+        var lines = markdown.SourceText.Replace("\t", "").Trim().Split('\n') ;
+        foreach (var line in lines)
         {
-            foreach (var item in Items)
+            foreach (var type in ItemTypes)
             {
-                Match match = Regex.Match(source.ToString(), item.Key);
+                Match match = Regex.Match(line, type.Key);
                 if (match.Success)
                 {
-                    yield return new SuikaItem(match.Value, item.Value);
-                    source.Remove(0, match.Length);
-                    goto Match;
+                    yield return new SuikaItemBuilder(line, type.Value).ToSuikaItem();
                 }
             }
-            source.Remove(0, 1);
-            Match:;
-
         }
     }
 }
