@@ -13,10 +13,13 @@ public class SuikaItem : MarkdownItem
 }
 public class FunctionItem : SuikaItem
 {
-    public FunctionItem(string value) : base(value)
+    public FunctionItem(string name, string[] args, string value) : base(value)
     {
-
+        Name = name;
+        Args = args;
     }
+    public readonly string Name;
+    public readonly string[] Args;
 }
 public class TextItem : SuikaItem
 {
