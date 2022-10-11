@@ -34,9 +34,10 @@ public class SuikaItemBuilder
                 item = new FunctionItem(value);
                 break;
             case ItemType.Label:
-                item = new LabelItem(value);
+                item = new LabelItem(value.Replace(":", "").Trim(), value);
                 break;
             default:
+                item = new SuikaItem("");
                 break;
         }
         return item;
