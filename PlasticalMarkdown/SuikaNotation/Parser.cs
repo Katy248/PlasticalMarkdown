@@ -6,34 +6,68 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace PlasticalMarkdown.SuikaNotation;
-class Parser : IMarkdownParser
+public class Parser : IMarkdownParser
 {
-    public Parser(Dictionary<string, ItemType> itemTypes)
+    public Parser(MarkdownInfo markdown, Dictionary<string, ItemType>? itemTypes = null)
     {
-        ItemTypes = itemTypes;
+        this.ItemTypes = itemTypes ?? SuikaItemTypes;
+        this.markdown = markdown;
+        this.lines = 
+            markdown
+            .SourceText
+            .Replace("\t", "")
+            .Trim().Split('\n')
+            .Where(_ => !String.IsNullOrWhiteSpace(_) /*&& String.IsNullOrEmpty(_)*/)
+            .ToArray();
     }
 
-    public readonly Dictionary<string, ItemType> ItemTypes = new();
+    private readonly MarkdownInfo markdown;
+    private readonly string[] lines;
+    public readonly Dictionary<string, ItemType> ItemTypes;
+    private int lineIndex = -1;
+    public SuikaItem CurrentItem
+    {
+        get
+        {
+            return currentItem ?? throw new ArgumentNullException("Line wasn't parsed yet, there isn't parsed item.");
+        }
+    }
+    private SuikaItem? currentItem;
+
+    public IEnumerable<MarkdownItem> Parse()
+    {
+        foreach (var line in lines)
+            yield return ParseLine(line, ItemTypes);
+    }
+
+    public MarkdownItem ParseLine()
+    {
+        currentItem = ParseLine(lines[lineIndex], ItemTypes);
+        return currentItem;
+    }
+
+    public MarkdownItem? ParseNext()
+    {
+        if (++lineIndex >= lines.Length) return null;
+
+        return ParseLine();
+    }
+
     public static readonly Dictionary<string, ItemType> SuikaItemTypes = new()
     {
-        {@"\%([\s][\S]+)*",ItemType.Function},
-        {@"\:[^\n]+",ItemType.Label},
-        {@"", ItemType.TextOutput }
+        {@"\%([\s][\S]+)*", ItemType.Function},
+        {@"\:[^\n]+", ItemType.Label},
+        {@"", ItemType.TextOutput}
     };
 
-    public IEnumerable<MarkdownItem> Parse(MarkdownInfo markdown)
+    private static SuikaItem ParseLine(string line, Dictionary<string, ItemType> itemTypes)
     {
-        var lines = markdown.SourceText.Replace("\t", "").Trim().Split('\n') ;
-        foreach (var line in lines)
+        foreach (var type in itemTypes)
         {
-            foreach (var type in ItemTypes)
-            {
-                Match match = Regex.Match(line, type.Key);
-                if (match.Success)
-                {
-                    yield return new SuikaItemBuilder(line, type.Value).ToSuikaItem();
-                }
-            }
+            Match match = Regex.Match(line, type.Key);
+            if (match.Success)
+                return new SuikaItemBuilder(line, type.Value).ToSuikaItem();
         }
+        return new SuikaItem("");
     }
 }
