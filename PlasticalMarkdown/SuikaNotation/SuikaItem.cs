@@ -35,10 +35,11 @@ public class TextItem : SuikaItem
 }
 public class LabelItem : SuikaItem
 {
-    public LabelItem(string value) : base(value)
+    public LabelItem(string label, string value) : base(value)
     {
-
+        Label = label;
     }
+    public readonly string Label;
 }
 public enum ItemType
 {
