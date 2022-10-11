@@ -14,7 +14,13 @@ class Parser : IMarkdownParser
     }
 
     public readonly Dictionary<string, ItemType> ItemTypes = new();
-    
+    public static readonly Dictionary<string, ItemType> SuikaItemTypes = new()
+    {
+        {@"\%([\s][\S]+)*",ItemType.Function},
+        {@"\:[^\n]+",ItemType.Label},
+        {@"", ItemType.TextOutput }
+    };
+
     public IEnumerable<MarkdownItem> Parse(MarkdownInfo markdown)
     {
         var lines = markdown.SourceText.Replace("\t", "").Trim().Split('\n') ;
