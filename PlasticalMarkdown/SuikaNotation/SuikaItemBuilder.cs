@@ -31,7 +31,8 @@ public class SuikaItemBuilder
                     item = new TextItem(value, "", value);
                 break;
             case ItemType.Function:
-                item = new FunctionItem(value);
+                var fnName = Regex.Match(value, @"\%[\S]+").Value.Trim();
+                item = new FunctionItem(fnName, value.Replace(fnName, "").Split(' '), value);
                 break;
             case ItemType.Label:
                 item = new LabelItem(value.Replace(":", "").Trim(), value);
