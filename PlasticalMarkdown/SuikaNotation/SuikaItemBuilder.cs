@@ -24,15 +24,15 @@ public class SuikaItemBuilder
         switch (type)
         {
             case ItemType.TextOutput:
-                Match match = Regex.Match(value, @"\*[\n]*\*");
+                Match match = Regex.Match(value, @"\*[^\n]*\*");
                 if (match.Success)
-                    item = new TextItem(value.Replace(match.Value, ""), match.Value, value);
+                    item = new TextItem(value.Replace(match.Value, ""), match.Value.Replace("*",""), value);
                 else
                     item = new TextItem(value, "", value);
                 break;
             case ItemType.Function:
                 var fnName = Regex.Match(value, @"\%[\S]+").Value.Trim();
-                item = new FunctionItem(fnName, value.Replace(fnName, "").Split(' '), value);
+                item = new FunctionItem(fnName, value.Trim().Replace(fnName, "").Split(' '), value);
                 break;
             case ItemType.Label:
                 item = new LabelItem(value.Replace(":", "").Trim(), value);
