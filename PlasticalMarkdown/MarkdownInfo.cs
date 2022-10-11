@@ -49,8 +49,8 @@ public class MarkdownInfo
 
     private FileInfo? file;
 
-    public IEnumerable<MarkdownItem> Parse(IMarkdownParser parser)
+    /*public IEnumerable<MarkdownItem> Parse(IMarkdownParser parser)
     {
-        return parser.Parse(this);
-    }
+        return parser.Parse();
+    }*/
 }
