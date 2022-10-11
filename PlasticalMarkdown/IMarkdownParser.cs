@@ -7,5 +7,7 @@ using System.Threading.Tasks;
 namespace PlasticalMarkdown;
 public interface IMarkdownParser
 {
-    IEnumerable<MarkdownItem> Parse(MarkdownInfo markdown);
+    IEnumerable<MarkdownItem> Parse();
+    MarkdownItem ParseLine();
+    MarkdownItem? ParseNext();
 }
