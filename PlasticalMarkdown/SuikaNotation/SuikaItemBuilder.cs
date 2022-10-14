@@ -6,9 +6,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PlasticalMarkdown.SuikaNotation;
-public class SuikaItemBuilder
+public class SuikaItemFactory
 {
-    public SuikaItemBuilder(string value, ItemType type)
+    public SuikaItemFactory(string value, ItemType type)
     {
         this.value = value;
         this.type = type;

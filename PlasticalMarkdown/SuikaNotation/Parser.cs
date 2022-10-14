@@ -66,7 +66,7 @@ public class Parser : IMarkdownParser
         {
             Match match = Regex.Match(line, type.Key);
             if (match.Success)
-                return new SuikaItemBuilder(line, type.Value).ToSuikaItem();
+                return new SuikaItemFactory(line, type.Value).ToSuikaItem();
         }
         return new SuikaItem("");
     }
