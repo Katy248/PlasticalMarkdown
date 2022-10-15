@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -15,15 +16,21 @@ public class Parser : IMarkdownParser
         this.lines = 
             markdown
             .SourceText
-            .Replace("\t", "")
-            .Trim().Split('\n')
-            .Where(_ => !String.IsNullOrWhiteSpace(_) /*&& String.IsNullOrEmpty(_)*/)
+            .Replace("\t", "").Trim()
+            .Split('\n')
+            .Where(_ => !String.IsNullOrWhiteSpace(_))
             .ToArray();
+        for (int i = 0; i < lines.Length; i++)
+        {
+            if (lines[i].StartsWith(':'))
+                Labels.Add(lines[i].Remove(0, 1), i);
+        }
     }
 
     private readonly MarkdownInfo markdown;
     private readonly string[] lines;
     public readonly Dictionary<string, ItemType> ItemTypes;
+    public readonly Dictionary<string, int> Labels = new Dictionary<string, int>();
     private int lineIndex = -1;
     public SuikaItem CurrentItem
     {
@@ -32,6 +39,7 @@ public class Parser : IMarkdownParser
             return currentItem ?? throw new ArgumentNullException("Line wasn't parsed yet, there isn't parsed item.");
         }
     }
+
     private SuikaItem? currentItem;
 
     public IEnumerable<MarkdownItem> Parse()
@@ -70,4 +78,15 @@ public class Parser : IMarkdownParser
         }
         return new SuikaItem("");
     }
+    public void GoTo(string label)
+    {
+
+    }
+    #region IMarkdownParser realization
+    MarkdownItem IMarkdownParser.CurrentItem => CurrentItem;
+    IEnumerable<MarkdownItem> IMarkdownParser.Parse() => this.Parse();
+    MarkdownItem IMarkdownParser.ParseLine() => this.ParseLine();
+    MarkdownItem? IMarkdownParser.ParseNext() => this.ParseNext();
+    void IMarkdownParser.GoTo(string mark) => this.GoTo(mark);
+    #endregion
 }
