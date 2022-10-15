@@ -1,18 +1,20 @@
 ﻿using PlasticalMarkdown;
 using PlasticalMarkdown.SuikaNotation;
 using PlasticalMarkdown.SuikaNotation.Functions;
+using PlasticalMarkdown.SuikaNotation.Labels;
 
 Console.WriteLine("Start");
 //Console.WriteLine($"{Directory.GetCurrentDirectory()}");
 var mi = new MarkdownInfo("script.txt");
 IMarkdownParser p = new Parser(mi);
 var fe = new SuikaFunctionExecuter();
+var lt = new LabelTransferer((ISuikaMarkdownParser)p);
 fe.AddFunction(new Function("цвет", x => { Console.BackgroundColor = (ConsoleColor)int.Parse(x.First()); }));
 fe.AddFunction(
 	new Function("к-метке", 
 	x=>
 	{
-
+		lt.SetPosition(x.First());
 	})
 	);
 while (p.ParseNext() is not null)
@@ -25,7 +27,6 @@ while (p.ParseNext() is not null)
 			Console.ReadLine();
 			break;
         case FunctionItem fi:
-			//Console.WriteLine(fi.Args.First());
 			fe.ExecuteFunction(fi);
             break;
         case LabelItem li:
