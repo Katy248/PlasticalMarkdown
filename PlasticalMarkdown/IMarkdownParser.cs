@@ -26,5 +26,4 @@ public interface IMarkdownParser
     /// Get current parsed <see cref="MarkdownItem"/>.
     /// </summary>
     MarkdownItem CurrentItem { get; }
-    void GoTo(string mark);
 }
