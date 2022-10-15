@@ -32,7 +32,9 @@ public class SuikaItemFactory
                 break;
             case ItemType.Function:
                 var fnName = Regex.Match(value, @"\%[\S]+").Value.Trim();
-                item = new FunctionItem(fnName, value.Trim().Replace(fnName, "").Split(' '), value);
+                item = new FunctionItem(fnName, value.Trim().Replace(fnName, "")
+                    .Split(' ').Where(_ => !String.IsNullOrWhiteSpace(_))
+                    .ToArray(), value);
                 break;
             case ItemType.Label:
                 item = new LabelItem(value.Replace(":", "").Trim(), value);
