@@ -14,6 +14,9 @@ public class Function
         FunctionHandler = functionHendler;
     }
 
+    private string? name;
+    public readonly Action<string[]> FunctionHandler;
+
     public string Name 
     { 
         get => name ?? ""; 
@@ -24,7 +27,4 @@ public class Function
                 name = '%' + name;
         } 
     }
-
-    private string? name;
-    public readonly Action<string[]> FunctionHandler;
 }
