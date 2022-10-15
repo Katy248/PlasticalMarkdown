@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace PlasticalMarkdown.SuikaNotation;
-public class Parser : IMarkdownParser
+public class Parser : IMarkdownParser, ISuikaMarkdownParser
 {
     public Parser(MarkdownInfo markdown, Dictionary<string, ItemType>? itemTypes = null)
     {
@@ -16,21 +16,16 @@ public class Parser : IMarkdownParser
         this.lines = 
             markdown
             .SourceText
-            .Replace("\t", "").Trim()
+            .Replace("\t", "").Replace("\r", "").Trim()
             .Split('\n')
             .Where(_ => !String.IsNullOrWhiteSpace(_))
             .ToArray();
-        for (int i = 0; i < lines.Length; i++)
-        {
-            if (lines[i].StartsWith(':'))
-                Labels.Add(lines[i].Remove(0, 1), i);
-        }
+        /**/
     }
 
     private readonly MarkdownInfo markdown;
     private readonly string[] lines;
     public readonly Dictionary<string, ItemType> ItemTypes;
-    public readonly Dictionary<string, int> Labels = new Dictionary<string, int>();
     private int lineIndex = -1;
     public SuikaItem CurrentItem
     {
@@ -84,9 +79,14 @@ public class Parser : IMarkdownParser
     }
     #region IMarkdownParser realization
     MarkdownItem IMarkdownParser.CurrentItem => CurrentItem;
+
+    int ISuikaMarkdownParser.CurrentLineIndex { get => lineIndex; set => lineIndex = value; }
+
+    IEnumerable<string> ISuikaMarkdownParser.Lines => lines;
+
     IEnumerable<MarkdownItem> IMarkdownParser.Parse() => this.Parse();
     MarkdownItem IMarkdownParser.ParseLine() => this.ParseLine();
     MarkdownItem? IMarkdownParser.ParseNext() => this.ParseNext();
-    void IMarkdownParser.GoTo(string mark) => this.GoTo(mark);
+    //void IMarkdownParser.GoTo(string mark) => this.GoTo(mark);
     #endregion
 }
