@@ -11,19 +11,28 @@ public class LabelTransferer
     {
         parser = suikaParser;
         var lines = parser.Lines.ToArray();
-
         //fill labels
         for (int i = 0; i < lines.Length; i++)
             if (lines[i].Trim().StartsWith(':'))
                 labels.Add(lines[i].Remove(0, 1), i);
     }
+
     private readonly ISuikaMarkdownParser parser;
     private Dictionary<string, int> labels = new Dictionary<string, int>();
+
     public void SetPosition(string label)
     {
         if (labels.TryGetValue(label, out int newPosition))
         {
             parser.CurrentLineIndex = newPosition;
+        }
+    }
+    public void SetPosition(int position)
+    {
+        var a = parser.Lines.Count();
+        if (position >= 0 & position < parser.Lines.Count())
+        {
+            parser.CurrentLineIndex = position;
         }
     }
 }
