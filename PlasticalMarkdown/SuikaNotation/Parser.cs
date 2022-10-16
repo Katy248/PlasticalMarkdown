@@ -12,7 +12,6 @@ public class Parser : IMarkdownParser, ISuikaMarkdownParser
     public Parser(MarkdownInfo markdown, Dictionary<string, ItemType>? itemTypes = null)
     {
         this.ItemTypes = itemTypes ?? SuikaItemTypes;
-        this.markdown = markdown;
         this.lines = 
             markdown
             .SourceText
@@ -20,10 +19,8 @@ public class Parser : IMarkdownParser, ISuikaMarkdownParser
             .Split('\n')
             .Where(_ => !String.IsNullOrWhiteSpace(_))
             .ToArray();
-        /**/
     }
 
-    private readonly MarkdownInfo markdown;
     private readonly string[] lines;
     public readonly Dictionary<string, ItemType> ItemTypes;
     private int lineIndex = -1;
