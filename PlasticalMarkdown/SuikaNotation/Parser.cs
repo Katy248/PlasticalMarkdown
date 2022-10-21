@@ -84,6 +84,5 @@ public class Parser : IMarkdownParser, ISuikaMarkdownParser
     IEnumerable<MarkdownItem> IMarkdownParser.Parse() => this.Parse();
     MarkdownItem IMarkdownParser.ParseLine() => this.ParseLine();
     MarkdownItem? IMarkdownParser.ParseNext() => this.ParseNext();
-    //void IMarkdownParser.GoTo(string mark) => this.GoTo(mark);
     #endregion
 }
