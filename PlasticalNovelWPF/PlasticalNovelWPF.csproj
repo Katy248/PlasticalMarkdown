@@ -11,4 +11,10 @@
     <ProjectReference Include="..\PlasticalMarkdown\PlasticalMarkdown.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="script.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
