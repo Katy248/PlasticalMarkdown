@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PlasticalMarkdown.SuikaNotation;
-public interface ISuikaMarkdownParser
+public interface ISuikaMarkdownParser : IMarkdownParser
 {
     IEnumerable<string> Lines { get; }
     int CurrentLineIndex { get; set; }
