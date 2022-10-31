@@ -6,7 +6,28 @@
         xmlns:local="clr-namespace:PlasticalNovelWPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid x:Name="grid" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Canvas Grid.RowSpan="3" Grid.ColumnSpan="3" MouseUp="Canvas_MouseUp" Background="Aquamarine"/>
+        <TextBlock x:Name="SpeakerBlock" Grid.Row="1" Grid.Column="1" Text="Speaker" Height="20" VerticalAlignment="Top">
+            <TextBlock.Background>
+                <SolidColorBrush Color="Orange" Opacity="0.5"/>
+            </TextBlock.Background>
+        </TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="SpeechBlock" Text="Speech" Height="80" VerticalAlignment="Bottom">
+            <TextBlock.Background>
+                <SolidColorBrush Color="Gray" Opacity="0.5"/>
+            </TextBlock.Background>
+        </TextBlock>
 
     </Grid>
 </Window>
