@@ -10,7 +10,7 @@ var mi = new MarkdownInfo("script.txt");
 IMarkdownParser p = new Parser(mi);
 var fe = new SuikaFunctionExecuter();
 var lt = new LabelTransferer((ISuikaMarkdownParser)p);
-var save = new Save() { LineIndex = 3 };
+var save = new Save() { LineIndex = 0 };
 lt.SetPosition(save.LineIndex-1);
 fe.AddFunction(new Function("цвет", x => { Console.BackgroundColor = (ConsoleColor)int.Parse(x.First()); }));
 fe.AddFunction(
